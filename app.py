@@ -13,7 +13,7 @@ from transformers import (
 )
 from threading import Thread
 
-model_id = r"G:\pred_work\download_models_hf\meta-llama\Llama-3.2-1B-Instruct"
+model_id = r".\Llama-3.2-1B-Instruct"
 
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token
