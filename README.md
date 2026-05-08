@@ -267,4 +267,13 @@ TROUBLESHOOTING
 - Use smaller models
 - Enable quantization
 
+
+## Model License
+
+This project is designed to work with Meta Llama models.
+
+Llama models are licensed separately by Meta and are subject to the official Llama license terms.
+
+Please review the official model license before commercial or production use.
+
 ==============================================================
