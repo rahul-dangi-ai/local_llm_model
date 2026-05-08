@@ -52,7 +52,7 @@ Install dependencies:
   pip install fastapi uvicorn torch transformers
 ```
 --------------------------------------------------------------
-RUN SERVER
+RUN SERVER [NON-DOCKER]
 --------------------------------------------------------------
 
   Start the API:
@@ -62,6 +62,53 @@ RUN SERVER
   Output:
 
     Server running at http://localhost:8000
+
+--------------------------------------------------------------
+RUN SERVER [DOCKER]
+--------------------------------------------------------------
+## Build Container
+
+```bash
+docker compose build
+```
+
+---
+
+## Start Server
+
+```bash
+docker compose up -d
+```
+
+---
+
+## Build with docker compose
+
+```bash
+docker compose up -d --build
+```
+
+## Stop Server
+
+```bash
+docker compose down
+```
+
+---
+
+# NVIDIA Docker Support
+
+Install NVIDIA Container Toolkit:
+
+[NVIDIA Container Toolkit Docs](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html?utm_source=chatgpt.com)
+
+Verify GPU access:
+
+```bash
+docker run --rm --gpus all nvidia/cuda:12.1.0-runtime-ubuntu22.04 nvidia-smi
+```
+
+
 
 --------------------------------------------------------------
 ENDPOINTS
@@ -212,5 +259,12 @@ TROUBLESHOOTING
   No streaming:
     → Ensure curl uses -N flag
 ```
+
+## Slow Inference
+
+- Use GPU acceleration
+- Reduce `max_new_tokens`
+- Use smaller models
+- Enable quantization
 
 ==============================================================

@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  llm-api:
+    build: .
+    container_name: llama-stream-api
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./:/app
+      - ./models:/models
+
+    environment:
+      - HF_HOME=/models/huggingface
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+    restart: unless-stopped
