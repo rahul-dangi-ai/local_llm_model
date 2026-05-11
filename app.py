@@ -89,14 +89,10 @@ async def generate(req: ChatRequest, request: Request):
     async def event_stream():
         try:
             for token in streamer:
-
-                # 🔥 detect client disconnect
                 if await request.is_disconnected():
                     print("⚠️ Client disconnected → stopping generation")
                     stop_flag["stop"] = True
                     break
-
-                # 🔥 proper streaming format
                 yield f"data: {json.dumps({'token': token})}\n\n"
 
         finally:
