@@ -1,20 +1,14 @@
-version: "3.9"
-
+# `version:` is obsolete in Compose v2 and only produces a warning.
 services:
   llm-api:
     build: .
-    container_name: llama-stream-api
-
+    container_name: streaming-llm-inference
     ports:
-      - "8000:8000"
-
+      - "${PORT:-8000}:8000"
+    env_file:
+      - .env
     volumes:
-      - ./:/app
       - ./models:/models
-
-    environment:
-      - HF_HOME=/models/huggingface
-
     deploy:
       resources:
         reservations:
@@ -22,5 +16,4 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-
     restart: unless-stopped
