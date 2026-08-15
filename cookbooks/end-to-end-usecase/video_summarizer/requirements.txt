@@ -1,0 +1,6 @@
+youtube-transcript-api==1.2.4
+requests==2.33.1
+python-dotenv
+tiktoken 
+pytube==15.0.0
+langchain-community==0.4.2
