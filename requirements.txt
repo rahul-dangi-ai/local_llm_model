@@ -1,7 +1,20 @@
-fastapi
-uvicorn[standard]
-torch
-transformers
-accelerate
-sentencepiece
-safetensors
+# torch and transformers are coupled: recent transformers releases require
+# torch >= 2.5 and will SILENTLY disable their PyTorch backend on an older
+# runtime, failing later as "AutoModelForCausalLM requires the PyTorch
+# library"
+# For a specific CUDA build, install torch first:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu124
+torch>=2.5
+
+# 4.43.0 is the floor for Llama 3.2 support. Pin an exact version in
+# production so a new release cannot outrun your torch build.
+transformers>=4.43.0
+# Required by device_map="auto" — without it from_pretrained raises ImportError.
+accelerate>=0.33.0
+safetensors>=0.4.3
+sentencepiece>=0.2.0
+
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.7.0
+python-dotenv>=1.0.1

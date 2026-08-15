@@ -1,26 +1,20 @@
-FROM pytorch/pytorch:2.4.0-cuda12.1-cudnn9-runtime
-
-# Prevent Python buffering
-ENV PYTHONUNBUFFERED=1
+FROM pytorch/pytorch:2.6.0-cuda12.4-cudnn9-runtime
 
 WORKDIR /app
 
-# Install system deps
-RUN apt-get update && apt-get install -y \
-    git \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first (better layer caching)
-COPY requirements.txt .
-
-# Install Python packages
+    
+COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app
-COPY . .
-
-# Expose FastAPI port
 EXPOSE 8000
 
-# Start server
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+# The model loads during startup, so allow generous time before the first
+# health check counts as a failure.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=300s --retries=3 \
+    CMD curl -fsS http://localhost:8000/health || exit 1
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--timeout-keep-alive", "75"]
